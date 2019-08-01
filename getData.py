@@ -1,28 +1,27 @@
-import os
 import pandas as pd
-from alpha_vantage.timeseries import TimeSeries
-import csv
 import matplotlib.pyplot as plt
+import yfinance as yf
+import csv
 
-API_KEY = 'CX5IL832J9PVYSA0'
-plt.close('all')
+start = '2016-01-01'
+end = '2019-01-01'
 
-ts = TimeSeries(key= API_KEY,output_format= 'pandas') 
-
-stocklist = []
+stocklist = []                                                                                                 
 with open('stock_Name.csv','r') as f:
     reader = csv.reader(f)
     for name in reader:
-        stocklist = name
+         stocklist = name
 print(stocklist)
-stock=[] 
+
 for x in name:
     try:
-        data,meta_data = ts.get_intraday(symbol=x,interval='30min',outputsize='compact')
-        data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)    
-        stock.append(data)
+        data = yf.download(x,start,end)
+        data.Close.plot()
+        plt.show()
+        if bool(int(input('save?'))):
+            data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)
+            print('saved')
+        else: 
+            print('not saved')
     except:
-        print('no data for' +x+ 'found!')
-for s in stock:
-     s['1. open'].plot()
-plt.show()
+        print('no data for' +x+ 'found!') 

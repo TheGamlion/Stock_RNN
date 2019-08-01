@@ -14,13 +14,15 @@ with open('stock_Name.csv','r') as f:
     reader = csv.reader(f)
     for name in reader:
         stocklist = name
-
+print(stocklist)
 stock=[] 
 for x in name:
-    data,meta_data = ts.get_daily(symbol=x,outputsize='full')
-    data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)    
-    stock.append(data)
-
+    try:
+        data,meta_data = ts.get_intraday(symbol=x,interval='30min',outputsize='compact')
+        data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)    
+        stock.append(data)
+    except:
+        print('no data for' +x+ 'found!')
 for s in stock:
      s['1. open'].plot()
 plt.show()

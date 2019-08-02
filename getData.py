@@ -17,11 +17,12 @@ for x in name:
     try:
         data = yf.download(x,start,end)
         data.Close.plot()
-        plt.show()
-        if bool(int(input('save?'))):
-            data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)
-            print('saved')
-        else: 
-            print('not saved')
+        data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)
+#        if bool(int(input('save?'))):
+#            data.to_csv('data/'+x+'.csv',encoding='utf-8', index=False)
+#            print('saved')
+#        else: 
+#            print('not saved')
     except:
         print('no data for' +x+ 'found!') 
+plt.show()
